@@ -23,6 +23,8 @@ Australian Citizenship: Our Common Bond
 - No account required
 - No backend required
 
+The practice questions are independently written. They are not official test questions or a substitute for the current Home Affairs study booklet.
+
 ## Technology
 
 - React
@@ -45,6 +47,10 @@ npm run dev
 Build production version:
 
 npm run build
+
+Run question-bank and scoring checks:
+
+npm test
 
 Preview production build:
 
