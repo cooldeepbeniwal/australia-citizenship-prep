@@ -4,6 +4,7 @@ import Home from './components/Home'
 import Quiz from './components/Quiz'
 import Results from './components/Results'
 import { QUESTIONS } from './data/questions'
+import { scoreQuiz } from './score'
 
 const DEFAULT_STATS = {
   attempts: 0,
@@ -131,34 +132,8 @@ function App() {
   }
 
   function finishQuiz(answeredQuestions) {
-    const total = answeredQuestions.length
-
-    const correct = answeredQuestions.filter(
-      (item) => item.isCorrect
-    ).length
-
-    const percentage =
-      total > 0
-        ? Math.round((correct / total) * 100)
-        : 0
-
-    const valuesQuestions = answeredQuestions.filter(
-      (item) => item.question.category === 'Australian values'
-    )
-
-    const valuesCorrect = valuesQuestions.filter(
-      (item) => item.isCorrect
-    ).length
-
-    const valuesTotal = valuesQuestions.length
-
     const isMock = quizMode === 'mock'
-
-    const valuesPassed =
-      !isMock || valuesCorrect === valuesTotal
-
-    const passed =
-      percentage >= 75 && valuesPassed
+    const { total, correct, percentage, valuesTotal, valuesCorrect, passed } = scoreQuiz(answeredQuestions, isMock)
 
     const missedIds = answeredQuestions
       .filter((item) => !item.isCorrect)

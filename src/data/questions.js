@@ -1,4 +1,4 @@
-const export const QUESTIONS = [
+export const QUESTIONS = [
   {
     id: 1,
     part: 1,
@@ -51,7 +51,7 @@ const export const QUESTIONS = [
     id: 4,
     part: 1,
     category: 'Australia and its people',
-    q: 'Which animal is featured on the Australian coat of arms?',
+    q: 'Which animal appears alongside the emu on the Australian coat of arms?',
     options: [
       'Koala',
       'Emu',
@@ -830,19 +830,56 @@ const export const QUESTIONS = [
     explain:
       'Under the rule of law, everyone is subject to Australian law.'
   },
-
-  {
-    id: 53,
-    part: 4,
-    category: 'Australian values',
-    q: 'Which principle is important to Australian society?',
-    options: [
-      'Freedom, respect, fairness and e = [
-  // your original 102 questions
-]export const CATEGORIES = [
-  ...new Set(
-    QUESTIONS.map(
-      question => question.category
-    )
-  )
+  {"id": 53, "part": 4, "category": "Australian values", "q": "Which values are central to Australian society?", "options": ["Obedience, wealth, rank and fame", "One religion for everyone", "Unequal treatment under law", "Freedom, respect, fairness and equality of opportunity"], "answer": 3, "explain": "Freedom, respect, fairness and equality of opportunity."},
+  {"id": 54, "part": 4, "category": "Australian values", "q": "Who must obey Australian law?", "options": ["Only people born in Australia", "Only people who vote", "Everyone in Australia", "Only citizens"], "answer": 2, "explain": "Everyone in Australia."},
+  {"id": 55, "part": 4, "category": "Australian values", "q": "Can a person choose not to follow a religion in Australia?", "options": ["Only after becoming a citizen", "Yes", "No", "Only with government permission"], "answer": 1, "explain": "Yes."},
+  {"id": 56, "part": 4, "category": "Australian values", "q": "How should people settle disagreements in Australia?", "options": ["Peacefully and within the law", "By using violence", "By threatening others", "By ignoring the law"], "answer": 0, "explain": "Peacefully and within the law."},
+  {"id": 57, "part": 4, "category": "Australian values", "q": "What does freedom of speech allow?", "options": ["Threatening violence without consequences", "Disobeying all laws", "Preventing others from speaking", "Expressing ideas within the law"], "answer": 3, "explain": "Expressing ideas within the law."},
+  {"id": 58, "part": 4, "category": "Australian values", "q": "Can women and men pursue the same opportunities in Australia?", "options": ["No, only women may vote", "Only if they share a religion", "Yes, they have equal rights", "No, only men may work"], "answer": 2, "explain": "Yes, they have equal rights."},
+  {"id": 59, "part": 4, "category": "Australian values", "q": "What does freedom of association mean?", "options": ["The government selects everyone's friends", "People may join lawful groups of their choice", "Everyone must join a political party", "Only citizens may meet friends"], "answer": 1, "explain": "People may join lawful groups of their choice."},
+  {"id": 60, "part": 4, "category": "Australian values", "q": "What does equality under the law mean?", "options": ["The law applies equally to everyone", "Wealthy people are above the law", "Only visitors obey laws", "Elected people are exempt"], "answer": 0, "explain": "The law applies equally to everyone."},
+  {"id": 61, "part": 4, "category": "Australian values", "q": "Which statement reflects mutual respect?", "options": ["All people must have identical beliefs", "Mock people for their religion", "Silence people who disagree", "Respect other people's rights and dignity"], "answer": 3, "explain": "Respect other people's rights and dignity."},
+  {"id": 62, "part": 4, "category": "Australian values", "q": "How are Australian laws determined in a parliamentary democracy?", "options": ["By foreign governments", "By the police alone", "By parliaments elected by the people", "By a single unelected person"], "answer": 2, "explain": "By parliaments elected by the people."},
+  {"id": 63, "part": 4, "category": "Australian values", "q": "What is expected when someone witnesses a person needing help?", "options": ["Wait until they become a citizen", "Offer reasonable help where possible", "Always ignore them", "Help only relatives"], "answer": 1, "explain": "Offer reasonable help where possible."},
+  {"id": 64, "part": 4, "category": "Australian values", "q": "May a person be forced to marry in Australia?", "options": ["No, marriage requires consent", "Yes, if a relative decides", "Yes, if an employer decides", "Only if the person is not a citizen"], "answer": 0, "explain": "No, marriage requires consent."},
+  {"id": 65, "part": 4, "category": "Australian values", "q": "What is the Australian attitude to domestic violence?", "options": ["It is a private matter exempt from law", "It is allowed for citizens", "It is required by tradition", "It is unacceptable and against the law"], "answer": 3, "explain": "It is unacceptable and against the law."},
+  {"id": 66, "part": 4, "category": "Australian values", "q": "Does freedom of religion remove the duty to obey Australian law?", "options": ["Only on weekends", "Only for elected officials", "No", "Yes"], "answer": 2, "explain": "No."},
+  {"id": 67, "part": 4, "category": "Australian values", "q": "Can Australians disagree with the government peacefully?", "options": ["Only during a ceremony", "Yes, within the law", "No, disagreement is forbidden", "Only judges may disagree"], "answer": 1, "explain": "Yes, within the law."},
+  {"id": 68, "part": 4, "category": "Australian values", "q": "What should you do even if no one is watching?", "options": ["Follow the law", "Ignore the law", "Avoid paying for goods", "Threaten other people"], "answer": 0, "explain": "Follow the law."},
+  {"id": 69, "part": 4, "category": "Australian values", "q": "What is meant by a fair go?", "options": ["Jobs depend only on family background", "Laws apply only to certain groups", "Everyone must earn the same wage", "People should have a fair chance to succeed"], "answer": 3, "explain": "People should have a fair chance to succeed."},
+  {"id": 70, "part": 4, "category": "Australian values", "q": "What is valued about the English language in Australia?", "options": ["It is the only language spoken anywhere", "Only citizens may speak it", "It helps people communicate and participate", "Other languages are illegal"], "answer": 2, "explain": "It helps people communicate and participate."},
+  {"id": 71, "part": 4, "category": "Australian values", "q": "May people choose their own partner in Australia?", "options": ["Only if their family has the same religion", "Yes", "No, the government chooses", "Only after voting"], "answer": 1, "explain": "Yes."},
+  {"id": 72, "part": 4, "category": "Australian values", "q": "What is compulsory for eligible Australian citizens?", "options": ["Voting in elections", "Joining a political party", "Serving in parliament", "Belonging to a religion"], "answer": 0, "explain": "Voting in elections."},
+  {"id": 73, "part": 4, "category": "Australian values", "q": "Which action shows respect for others?", "options": ["Discriminating against neighbours", "Threatening people with different views", "Refusing to obey laws", "Treating people equally regardless of background"], "answer": 3, "explain": "Treating people equally regardless of background."},
+  {"id": 74, "part": 4, "category": "Australian values", "q": "What role does peaceful discussion play in democracy?", "options": ["It replaces all elections", "It permits violence", "It helps people express different views", "It must always be prohibited"], "answer": 2, "explain": "It helps people express different views."},
+  {"id": 75, "part": 4, "category": "Australian values", "q": "Who is above the law in Australia?", "options": ["Only wealthy people", "Nobody", "The Prime Minister", "Police officers"], "answer": 1, "explain": "Nobody."},
+  {"id": 76, "part": 4, "category": "Australian values", "q": "Which statement about discrimination reflects Australian values?", "options": ["People deserve fair treatment regardless of background", "Some religions have fewer legal rights", "Women cannot vote", "People with disabilities cannot work"], "answer": 0, "explain": "People deserve fair treatment regardless of background."},
+  {"id": 77, "part": 4, "category": "Australian values", "q": "Why do citizens vote for representatives?", "options": ["To choose the head of every court", "To avoid all taxes", "To choose the national language", "To have a say in how the country is governed"], "answer": 3, "explain": "To have a say in how the country is governed."},
+  {"id": 78, "part": 1, "category": "Australia and its people", "q": "Where is the Great Barrier Reef?", "options": ["Off the coast of Queensland", "In the centre of Tasmania", "In the mountains of Victoria", "West of Perth"], "answer": 0, "explain": "Off the coast of Queensland."},
+  {"id": 79, "part": 1, "category": "Australia and its people", "q": "In which territory is Uluru located?", "options": ["Northern Territory", "Australian Capital Territory", "Queensland", "Tasmania"], "answer": 0, "explain": "Northern Territory."},
+  {"id": 80, "part": 1, "category": "Australia and its people", "q": "How many states does Australia have?", "options": ["Six", "Four", "Eight", "Ten"], "answer": 0, "explain": "Six."},
+  {"id": 81, "part": 1, "category": "Australia and its people", "q": "In what year did the Australian colonies federate?", "options": ["1901", "1788", "1914", "2001"], "answer": 0, "explain": "1901."},
+  {"id": 82, "part": 1, "category": "Australia and its people", "q": "What is the name of Australia’s national anthem?", "options": ["Advance Australia Fair", "Waltzing Matilda", "God Save the King", "Song of Australia"], "answer": 0, "explain": "Advance Australia Fair."},
+  {"id": 83, "part": 1, "category": "Australia and its people", "q": "What are the colours of the Torres Strait Islander Flag?", "options": ["Green and gold only", "Green, blue, black and white", "Red, black and yellow", "Blue, red and white"], "answer": 1, "explain": "Green, blue, black and white."},
+  {"id": 84, "part": 1, "category": "Australia and its people", "q": "Which event is remembered on Anzac Day?", "options": ["The service and sacrifice of Australians and New Zealanders in wars and conflicts", "The start of daylight saving", "The opening of parliament each year", "The first Australian election"], "answer": 0, "explain": "The service and sacrifice of Australians and New Zealanders in wars and conflicts."},
+  {"id": 85, "part": 1, "category": "Australia and its people", "q": "On what date is Australia Day observed?", "options": ["25 April", "1 January", "11 November", "26 January"], "answer": 3, "explain": "26 January."},
+  {"id": 86, "part": 2, "category": "Democratic beliefs, rights and liberties", "q": "What is one privilege of Australian citizenship?", "options": ["Avoiding jury duty in every case", "Voting twice in one election", "Applying for an Australian passport", "Ignoring Australian law"], "answer": 2, "explain": "Applying for an Australian passport."},
+  {"id": 87, "part": 2, "category": "Democratic beliefs, rights and liberties", "q": "What is one responsibility of Australian citizens aged 18 or over?", "options": ["Choosing a religion", "Voting in federal and state or territory elections", "Joining the armed forces", "Joining a trade union"], "answer": 1, "explain": "Voting in federal and state or territory elections."},
+  {"id": 88, "part": 2, "category": "Democratic beliefs, rights and liberties", "q": "What does freedom of religion mean?", "options": ["People may follow any religion or none", "Only one faith is allowed", "Religion replaces Australian law", "Only citizens may choose a religion"], "answer": 0, "explain": "People may follow any religion or none."},
+  {"id": 89, "part": 2, "category": "Democratic beliefs, rights and liberties", "q": "What is a referendum used for?", "options": ["Choosing local councillors", "Appointing police officers", "Selecting jury members", "Voting on a proposed change to the Australian Constitution"], "answer": 3, "explain": "Voting on a proposed change to the Australian Constitution."},
+  {"id": 90, "part": 2, "category": "Democratic beliefs, rights and liberties", "q": "What is the role of a jury in some court cases?", "options": ["Running elections", "Choosing the Prime Minister", "Considering evidence and helping decide a verdict", "Making laws in parliament"], "answer": 2, "explain": "Considering evidence and helping decide a verdict."},
+  {"id": 91, "part": 2, "category": "Democratic beliefs, rights and liberties", "q": "Why is voting by secret ballot important?", "options": ["It lets a person vote several times", "People can vote without intimidation", "Only officials know how to vote", "It means votes are not counted"], "answer": 1, "explain": "People can vote without intimidation."},
+  {"id": 92, "part": 2, "category": "Democratic beliefs, rights and liberties", "q": "Which statement describes equality of opportunity?", "options": ["People should have fair opportunities regardless of background", "Only people from one family may work", "Women may not study", "Everyone must choose the same career"], "answer": 0, "explain": "People should have fair opportunities regardless of background."},
+  {"id": 93, "part": 3, "category": "Government and the law", "q": "What are the two houses of the Australian Parliament?", "options": ["The Cabinet and the High Court", "The police and the Senate", "The House of Lords and the Senate", "The House of Representatives and the Senate"], "answer": 3, "explain": "The House of Representatives and the Senate."},
+  {"id": 94, "part": 3, "category": "Government and the law", "q": "Who makes and changes federal laws?", "options": ["Local libraries", "The jury alone", "The Australian Parliament", "The police alone"], "answer": 2, "explain": "The Australian Parliament."},
+  {"id": 95, "part": 3, "category": "Government and the law", "q": "Who leads the Australian Government?", "options": ["The Mayor of Canberra", "The Prime Minister", "The Governor of the Reserve Bank", "The Chief Justice"], "answer": 1, "explain": "The Prime Minister."},
+  {"id": 96, "part": 3, "category": "Government and the law", "q": "Who is Australia's Head of State?", "options": ["The King of Australia", "The Prime Minister", "The Speaker", "The Chief Justice"], "answer": 0, "explain": "The King of Australia."},
+  {"id": 97, "part": 3, "category": "Government and the law", "q": "Who represents the Head of State at the federal level?", "options": ["The Prime Minister", "The Chief Justice", "The Premier", "The Governor-General"], "answer": 3, "explain": "The Governor-General."},
+  {"id": 98, "part": 3, "category": "Government and the law", "q": "Which level of government is generally responsible for rubbish collection?", "options": ["Federal courts", "The Senate", "Local government", "The United Nations"], "answer": 2, "explain": "Local government."},
+  {"id": 99, "part": 3, "category": "Government and the law", "q": "Which level of government is responsible for immigration and citizenship?", "options": ["A state police force", "Australian Government", "Local government", "A city council alone"], "answer": 1, "explain": "Australian Government."},
+  {"id": 100, "part": 3, "category": "Government and the law", "q": "What is the highest court in Australia?", "options": ["The High Court of Australia", "The local council", "The Senate", "The Federal Cabinet"], "answer": 0, "explain": "The High Court of Australia."},
+  {"id": 101, "part": 3, "category": "Government and the law", "q": "What is the Australian Constitution?", "options": ["A list of all road rules", "A register of local elections", "A political party's manifesto", "The fundamental rules for Australia's government"], "answer": 3, "explain": "The fundamental rules for Australia's government."},
+  {"id": 102, "part": 3, "category": "Government and the law", "q": "What is the name of Australia's national police agency?", "options": ["Australian Electoral Commission", "High Court of Australia", "Australian Federal Police", "Australian Defence Force"], "answer": 2, "explain": "Australian Federal Police."}
 ]
+
+export const CATEGORIES = [...new Set(QUESTIONS.map(question => question.category))]
