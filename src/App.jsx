@@ -3,15 +3,11 @@ import { useEffect, useState } from 'react'
 import Home from './components/Home'
 import Quiz from './components/Quiz'
 import Results from './components/Results'
+import Account from './components/Account'
 import { QUESTIONS } from './data/questions'
 import { scoreQuiz } from './score'
-
-const DEFAULT_STATS = {
-  attempts: 0,
-  correct: 0,
-  bestMockPct: null,
-  missedIds: []
-}
+import { supabase } from './supabase'
+import { appendPending, cacheKey, guestImportEvent, GUEST_KEY, pendingKey, progressFromEvents, readGuestStats, readPending } from './progress'
 
 function shuffle(array) {
   const copy = [...array]
@@ -24,41 +20,83 @@ function shuffle(array) {
   return copy
 }
 
-function loadStats() {
-  try {
-    const saved = localStorage.getItem('common-bond-stats')
-
-    if (saved) {
-      return {
-        ...DEFAULT_STATS,
-        ...JSON.parse(saved)
-      }
-    }
-  } catch (error) {
-    console.warn('Could not load saved statistics.', error)
-  }
-
-  return DEFAULT_STATS
-}
-
 function App() {
   const [screen, setScreen] = useState('home')
-  const [stats, setStats] = useState(loadStats)
+  const [stats, setStats] = useState(readGuestStats)
+  const [user, setUser] = useState(null)
+  const [syncStatus, setSyncStatus] = useState('')
   const [queue, setQueue] = useState([])
   const [quizTitle, setQuizTitle] = useState('')
   const [quizMode, setQuizMode] = useState('')
   const [result, setResult] = useState(null)
 
   useEffect(() => {
-    try {
-      localStorage.setItem(
-        'common-bond-stats',
-        JSON.stringify(stats)
-      )
-    } catch (error) {
-      console.warn('Could not save statistics.', error)
+    if (!supabase) return
+    let active = true
+    supabase.auth.getUser().then(({ data }) => { if (active) setUser(data.user) })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (active) setUser(session?.user || null)
+    })
+    return () => { active = false; subscription.unsubscribe() }
+  }, [])
+
+  useEffect(() => {
+    if (!user) {
+      setStats(readGuestStats())
+      setSyncStatus('')
+      return
     }
-  }, [stats])
+    let active = true
+    try {
+      const cached = JSON.parse(localStorage.getItem(cacheKey(user.id)) || '[]')
+      setStats(progressFromEvents([...cached, ...readPending(user.id)]))
+    } catch (error) { console.warn('Could not read cached progress.', error) }
+    async function sync() {
+      setSyncStatus('Syncing progress…')
+      try {
+        const imported = guestImportEvent(user.id)
+        if (imported) appendPendingOnce(user.id, imported)
+        const pending = readPending(user.id)
+        if (pending.length) {
+          const { error } = await supabase.from('progress_events').upsert(
+            pending.map(({ id, ...payload }) => ({ id, user_id: user.id, payload })),
+            { onConflict: 'id', ignoreDuplicates: true }
+          )
+          if (error) throw error
+          localStorage.setItem(pendingKey(user.id), '[]')
+        }
+        const { data, error } = await supabase.from('progress_events').select('id, payload, created_at').eq('user_id', user.id).order('created_at', { ascending: true }).order('id', { ascending: true })
+        if (error) throw error
+        if (active) {
+          try { localStorage.setItem(cacheKey(user.id), JSON.stringify(data)) }
+          catch (error) { console.warn('Could not cache progress.', error) }
+          setStats(progressFromEvents(data))
+          setSyncStatus('Progress synced.')
+        }
+      } catch (error) {
+        if (active) {
+          try {
+            const cached = JSON.parse(localStorage.getItem(cacheKey(user.id)) || '[]')
+            setStats(progressFromEvents([...cached, ...readPending(user.id)]))
+          } catch (cacheError) { console.warn('Could not read cached progress.', cacheError) }
+          setSyncStatus('Could not sync. Your practice is saved on this device; try Sync now when online.')
+          console.warn('Progress sync failed.', error)
+        }
+      }
+    }
+    sync()
+    const onOnline = () => sync()
+    window.addEventListener('online', onOnline)
+    return () => { active = false; window.removeEventListener('online', onOnline) }
+  }, [user])
+
+  function refreshProgress() {
+    if (user) setUser({ ...user })
+  }
+
+  function appendPendingOnce(userId, event) {
+    if (!readPending(userId).some((item) => item.id === event.id)) appendPending(userId, event)
+  }
 
   function startQuiz(questionList, title, mode) {
     if (!questionList || questionList.length === 0) {
@@ -139,7 +177,22 @@ function App() {
       .filter((item) => !item.isCorrect)
       .map((item) => item.question.id)
 
-    setStats((previous) => {
+    if (user) {
+      const event = {
+        id: crypto.randomUUID(), kind: 'quiz', mode: quizMode,
+        total, correct, percentage,
+        answers: answeredQuestions.map((item) => ({ id: item.question.id, correct: item.isCorrect }))
+      }
+      try {
+        appendPending(user.id, event)
+        setStats((previous) => progressFromEvents([{ kind: 'import', stats: previous }, event]))
+        setSyncStatus('Saved on this device. Syncing…')
+        refreshProgress()
+      } catch (error) {
+        setSyncStatus('Could not save progress on this device. Please check available storage.')
+        console.warn('Could not save progress.', error)
+      }
+    } else setStats((previous) => {
       const existingMissed = previous.missedIds || []
 
       const newlyMissed = [
@@ -174,6 +227,8 @@ function App() {
         nextStats.bestMockPct = percentage
       }
 
+      try { localStorage.setItem(GUEST_KEY, JSON.stringify(nextStats)) }
+      catch (error) { console.warn('Could not save guest progress.', error) }
       return nextStats
     })
 
@@ -213,7 +268,7 @@ function App() {
   return (
     <div className="app-shell">
       {screen === 'home' && (
-        <Home
+        <><Home
           stats={stats}
           questionCount={QUESTIONS.length}
           onStartMock={startMock}
@@ -221,7 +276,7 @@ function App() {
           onStartAll={startAll}
           onStartCategory={startCategory}
           onStartMissed={startMissed}
-        />
+        /><Account user={user} syncStatus={syncStatus} onRefresh={refreshProgress} /></>
       )}
 
       {screen === 'quiz' && (

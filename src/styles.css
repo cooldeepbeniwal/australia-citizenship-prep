@@ -1078,3 +1078,19 @@ p {
     padding: 17px;
   }
 }
+
+.account-card {
+  margin: 24px 0;
+  padding: 20px;
+  border-radius: 18px;
+  background: var(--surface, #fff);
+  color: var(--ink);
+}
+.account-card h2 { margin: 0 0 8px; font-size: 20px; }
+.account-card p { line-height: 1.5; }
+.account-form { display: grid; gap: 10px; }
+.account-form label { font-weight: 700; }
+.account-form input { padding: 12px; border: 1px solid #8b9493; border-radius: 8px; font: inherit; }
+.account-form button, .account-actions button { padding: 12px 15px; border: 0; border-radius: 8px; background: #153a36; color: white; font: inherit; font-weight: 700; cursor: pointer; }
+.account-form button:disabled, .account-actions button:disabled { opacity: .6; cursor: wait; }
+.account-actions { display: flex; flex-wrap: wrap; gap: 10px; }
