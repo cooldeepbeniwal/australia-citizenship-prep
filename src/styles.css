@@ -726,6 +726,33 @@ p {
 }
 
 /* Results */
+.answer-button[aria-pressed="true"] {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.quiz-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.quiz-navigation .next-button {
+  flex: 1 1 160px;
+  gap: 8px;
+  margin-top: 0;
+}
+
+.quiz-navigation .previous-button {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
+.quiz-navigation button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 
 .results-header {
   padding: 25px 0 20px;
