@@ -4,6 +4,7 @@ import Home from './components/Home'
 import Quiz from './components/Quiz'
 import Results from './components/Results'
 import Account from './components/Account'
+import MockAccess from './components/MockAccess'
 import { QUESTIONS } from './data/questions'
 import { scoreQuiz } from './score'
 import { supabase } from './supabase'
@@ -29,6 +30,11 @@ function App() {
   const [quizTitle, setQuizTitle] = useState('')
   const [quizMode, setQuizMode] = useState('')
   const [result, setResult] = useState(null)
+  const [mockAccessUserId, setMockAccessUserId] = useState(null)
+  const [accessStatus, setAccessStatus] = useState('checking')
+  const [checkoutBusy, setCheckoutBusy] = useState(false)
+  const [checkoutMessage, setCheckoutMessage] = useState('')
+  const hasMockAccess = Boolean(user && mockAccessUserId === user.id && accessStatus === 'ready')
 
   useEffect(() => {
     if (!supabase) return
@@ -39,6 +45,72 @@ function App() {
     })
     return () => { active = false; subscription.unsubscribe() }
   }, [])
+
+  async function checkMockAccess(account = user) {
+    if (!account || !supabase) return
+    setAccessStatus('checking')
+    const { data, error } = await supabase.from('mock_access').select('status')
+      .eq('user_id', account.id).maybeSingle()
+    if (error) {
+      setAccessStatus('error')
+      return
+    }
+    setMockAccessUserId(data?.status === 'paid' ? account.id : null)
+    setAccessStatus('ready')
+  }
+
+  useEffect(() => {
+    setMockAccessUserId(null)
+    if (!user) { setAccessStatus('ready'); return }
+    let active = true
+    setAccessStatus('checking')
+    supabase.from('mock_access').select('status').eq('user_id', user.id).maybeSingle()
+      .then(({ data, error }) => {
+        if (!active) return
+        setMockAccessUserId(!error && data?.status === 'paid' ? user.id : null)
+        setAccessStatus(error ? 'error' : 'ready')
+      })
+    return () => { active = false }
+  }, [user?.id])
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('checkout') !== 'success') return
+    setScreen('paywall')
+    setCheckoutMessage('Payment submitted. Checking for your purchase confirmation…')
+    if (!user) return
+    let attempts = 0
+    const timer = setInterval(async () => {
+      attempts += 1
+      const { data } = await supabase.from('mock_access').select('status')
+        .eq('user_id', user.id).maybeSingle()
+      if (data?.status === 'paid') {
+        setMockAccessUserId(user.id)
+        setAccessStatus('ready')
+        setCheckoutMessage('Payment confirmed. Your mock test is unlocked.')
+        clearInterval(timer)
+      } else if (attempts >= 15) {
+        setCheckoutMessage('Still waiting for confirmation. Use “Already paid? Check access” in a moment.')
+        clearInterval(timer)
+      }
+    }, 2000)
+    return () => clearInterval(timer)
+  }, [user?.id])
+
+  async function beginCheckout() {
+    if (!user || accessStatus !== 'ready' || hasMockAccess || checkoutBusy) return
+    setCheckoutBusy(true)
+    setCheckoutMessage('')
+    try {
+      const { data, error } = await supabase.functions.invoke('create-mock-checkout')
+      if (error || !data?.url) throw error || new Error('Checkout is unavailable.')
+      const target = new URL(data.url)
+      if (target.protocol !== 'https:' || !target.hostname.endsWith('.stripe.com')) throw new Error('Invalid checkout destination.')
+      window.location.assign(target.href)
+    } catch (error) {
+      setCheckoutMessage(error?.message || 'Could not start checkout. Please try again.')
+      setCheckoutBusy(false)
+    }
+  }
 
   useEffect(() => {
     if (!user) {
@@ -111,6 +183,7 @@ function App() {
   }
 
   function startMock() {
+    if (!hasMockAccess) { setScreen('paywall'); return }
     const values = QUESTIONS.filter(
       (question) => question.category === 'Australian values'
     )
@@ -258,6 +331,7 @@ function App() {
       return
     }
 
+    if (result.mode === 'mock' && !hasMockAccess) { setScreen('paywall'); return }
     startQuiz(
       result.questions.map((item) => item.question),
       result.title,
@@ -288,6 +362,20 @@ function App() {
           onExit={goHome}
         />
       )}
+
+      {screen === 'paywall' && <MockAccess
+        user={user}
+        syncStatus={syncStatus}
+        onRefreshProgress={refreshProgress}
+        hasAccess={hasMockAccess}
+        accessStatus={accessStatus}
+        message={checkoutMessage}
+        busy={checkoutBusy}
+        onCheckout={beginCheckout}
+        onCheckAccess={() => checkMockAccess()}
+        onStart={startMock}
+        onHome={goHome}
+      />}
 
       {screen === 'results' && result && (
         <Results

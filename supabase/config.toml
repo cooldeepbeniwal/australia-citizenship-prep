@@ -1,0 +1,5 @@
+[functions.create-mock-checkout]
+verify_jwt = false # The handler verifies the Supabase user token with Auth.
+
+[functions.stripe-mock-webhook]
+verify_jwt = false # Stripe signs the raw request body; it sends no Supabase JWT.

@@ -3,7 +3,7 @@ import { CATEGORIES } from '../data/questions'
 export default function Home({ stats, questionCount, onStartMock, onStartValues, onStartAll, onStartCategory, onStartMissed }) {
   const accuracy = stats.attempts ? Math.round(stats.correct / stats.attempts * 100) : 0
   const modes = [
-    ['Full Mock Test', '20 questions · 5 values · 75% to pass', '20', onStartMock],
+    ['Full Mock Test', '20 questions · 5 values · A$4.99 one-time unlock', '20', onStartMock],
     ['Australian Values', 'Practise every values question', '★', onStartValues],
     ['Study All Questions', `Explore all ${questionCount} questions`, '∞', onStartAll],
     ['Review Missed Questions', `${stats.missedIds.length} saved for review`, '↻', onStartMissed]

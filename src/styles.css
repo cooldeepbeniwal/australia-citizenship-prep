@@ -1121,3 +1121,13 @@ p {
 .account-form button, .account-actions button { padding: 12px 15px; border: 0; border-radius: 8px; background: #153a36; color: white; font: inherit; font-weight: 700; cursor: pointer; }
 .account-form button:disabled, .account-actions button:disabled { opacity: .6; cursor: wait; }
 .account-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.mock-access-page { max-width: 740px; margin: 0 auto; }
+.mock-access-card { margin-top: 16px; }
+.mock-access-card h1 { margin: 8px 0 16px; font-size: clamp(28px, 7vw, 42px); }
+.mock-access-card p { line-height: 1.55; }
+.mock-price { padding: 14px 0; border-top: 1px solid #dcd6ca; border-bottom: 1px solid #dcd6ca; }
+.mock-price strong { font-size: 27px; color: var(--ink); }
+.mock-access-card .next-button, .mock-access-card .secondary-button { margin: 12px 0 0; }
+.mock-access-card button:disabled { opacity: .55; cursor: wait; }
+.back-link { border: 0; background: transparent; color: var(--ink); padding: 10px 0; font: inherit; font-weight: 700; cursor: pointer; }
